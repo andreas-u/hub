@@ -1,7 +1,6 @@
-package org.fg.fom.persistence.model
+package org.fg.fom.presentation
 
 import io.quarkus.runtime.annotations.RegisterForReflection
-import jakarta.inject.Inject
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.DELETE
 import jakarta.ws.rs.GET
@@ -12,6 +11,8 @@ import jakarta.ws.rs.PathParam
 import jakarta.ws.rs.Produces
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
+import org.fg.fom.domain.FateOfMythrasCharacterService
+import org.fg.fom.persistence.model.FateOfMythrasCharacter
 
 
 @Path("/characters/fom")

@@ -1,5 +1,7 @@
-package org.fg.fom.persistence.model
+package org.fg.fom.domain
 
+import org.fg.fom.persistence.model.CharacteristicType
+import org.fg.fom.persistence.model.Characteristics
 import org.fg.fom.persistence.model.Skill.StandardSkill
 
 class CreateCharacter() {

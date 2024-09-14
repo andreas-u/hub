@@ -12,7 +12,7 @@ repositories {
 val quarkusPlatformGroupId: String by project
 val quarkusPlatformArtifactId: String by project
 val quarkusPlatformVersion: String by project
-val jdbiVersion: String by project
+val kotestVersion: String by project
 
 dependencies {
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
@@ -39,6 +39,13 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.16.1")
 
     implementation("com.github.slugify:slugify:3.0.7")
+
+    // MockK
+    testImplementation("io.mockk:mockk:1.13.9")
+
+    // Kotest Matchers
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
 }
 
 group = "org.fg"

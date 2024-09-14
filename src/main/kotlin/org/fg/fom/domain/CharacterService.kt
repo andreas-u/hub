@@ -1,7 +1,8 @@
-package org.fg.fom.persistence.model
+package org.fg.fom.domain
 
 import arrow.core.Either
 import jakarta.enterprise.context.ApplicationScoped
+import org.fg.fom.persistence.model.FateOfMythrasCharacter
 
 // FateOfMythrasCharacterService.kt
 

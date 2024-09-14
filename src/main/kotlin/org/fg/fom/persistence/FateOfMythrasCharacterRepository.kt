@@ -1,4 +1,5 @@
-package org.fg.fom.persistence.model
+package org.fg.fom.persistence
+
 
 import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoCollection
@@ -12,6 +13,7 @@ import arrow.core.Either
 import jakarta.enterprise.context.ApplicationScoped
 import org.bson.Document
 import org.bson.types.ObjectId
+import org.fg.fom.persistence.model.FateOfMythrasCharacter
 
 interface CharacterRepository {
     fun create(character: FateOfMythrasCharacter): Either<Throwable, FateOfMythrasCharacter>
@@ -34,18 +36,18 @@ class FateOfMythrasCharacterRepository(private val mongoClient: MongoClient) : C
     }
 
     override fun findById(id: String): Either<Throwable, FateOfMythrasCharacter?> = Either.catch {
-        val document = collection.find(eq("_id", ObjectId(id))).first()
+        val document = collection.find(eq("id", id)).first()
         document?.let { objectMapper.readValue(it.toJson(), FateOfMythrasCharacter::class.java) }
     }
 
     override fun update(character: FateOfMythrasCharacter): Either<Throwable, FateOfMythrasCharacter> = Either.catch {
         val document = Document.parse(objectMapper.writeValueAsString(character))
-        val result: UpdateResult = collection.replaceOne(eq("_id", ObjectId(character.id)), document)
+        val result: UpdateResult = collection.replaceOne(eq("id", character.id), document)
         if (result.wasAcknowledged()) character else throw RuntimeException("Failed to update character")
     }
 
     override fun delete(id: String): Either<Throwable, Boolean> = Either.catch {
-        val result: DeleteResult = collection.deleteOne(eq("_id", ObjectId(id)))
+        val result: DeleteResult = collection.deleteOne(eq("id", id))
         result.wasAcknowledged() && result.deletedCount > 0
     }
 

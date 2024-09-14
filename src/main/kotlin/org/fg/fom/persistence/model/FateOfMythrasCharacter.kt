@@ -1,17 +1,22 @@
 package org.fg.fom.persistence.model
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.github.slugify.Slugify
+import org.fg.fom.persistence.model.Skill.AspectTiedSkill
+import org.fg.fom.persistence.model.Skill.StandardSkill
 
 class InvalidCharacterException(message: String) : IllegalArgumentException(message)
 
 private val slugify = Slugify.builder().build()
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class FateOfMythrasCharacter(
     val name: String,
     val aspects: Map<AspectId, Aspect> = emptyMap(),
     val characteristics: Map<CharacteristicType, Characteristics> = emptyMap(),
-    val skills: Map<SkillId, Skill> = emptyMap(),
+    val standardSkills: Map<SkillId, StandardSkill> = emptyMap(),
+    val aspectTiedSkills: Map<SkillId, AspectTiedSkill> = emptyMap(),
     val stunts: Map<StuntId, Stunt> = emptyMap(),
     val fatePoints: Int
 ) {
@@ -44,22 +49,24 @@ sealed class Skill(
 ) {
 
 
-    val id: String = slugify.slugify(name)
-
     data class AspectTiedSkill(
         override val name: String,
         override val value: Int,
         override val primaryCharacteristic: CharacteristicType,
         override val secondaryCharacteristic: CharacteristicType,
         val aspect: Aspect,
-    ) : Skill(name, value, primaryCharacteristic, secondaryCharacteristic)
+    ) : Skill(name, value, primaryCharacteristic, secondaryCharacteristic) {
+        val id: String = slugify.slugify(name)
+    }
 
     data class StandardSkill(
         override val name: String,
         override val value: Int,
         override val primaryCharacteristic: CharacteristicType,
         override val secondaryCharacteristic: CharacteristicType,
-    ) : Skill(name, value, primaryCharacteristic, secondaryCharacteristic)
+    ) : Skill(name, value, primaryCharacteristic, secondaryCharacteristic) {
+        val id: String = slugify.slugify(name)
+    }
 }
 
 enum class CharacteristicType(val shortName: String, val longName: String) {
